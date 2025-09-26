@@ -1,0 +1,100 @@
+[
+  {
+    "timestamp": "2025-09-23T01:22:38.452Z",
+    "key": "enablePositionLogging",
+    "oldValue": true,
+    "newValue": true,
+    "pid": 3336
+  },
+  {
+    "timestamp": "2025-09-23T01:22:38.456Z",
+    "key": "enableCrossunderSignals",
+    "oldValue": false,
+    "newValue": false,
+    "pid": 3336
+  },
+  {
+    "timestamp": "2025-09-23T01:22:38.458Z",
+    "key": "enablePerformanceMetrics",
+    "oldValue": false,
+    "newValue": false,
+    "pid": 3336
+  },
+  {
+    "timestamp": "2025-09-23T01:22:38.461Z",
+    "key": "defaultTimeframe",
+    "oldValue": "1Min",
+    "newValue": "1Min",
+    "pid": 3336
+  },
+  {
+    "timestamp": "2025-09-23T01:22:38.463Z",
+    "key": "defaultTakeProfit",
+    "oldValue": "auto",
+    "newValue": "auto",
+    "pid": 3336
+  },
+  {
+    "timestamp": "2025-09-23T01:22:38.465Z",
+    "key": "defaultStopLoss",
+    "oldValue": "auto",
+    "newValue": "auto",
+    "pid": 3336
+  },
+  {
+    "timestamp": "2025-09-23T01:22:38.469Z",
+    "key": "testKey",
+    "oldValue": "testValue",
+    "newValue": "testValue",
+    "pid": 3336
+  },
+  {
+    "timestamp": "2025-09-23T01:22:38.474Z",
+    "key": "testKey",
+    "oldValue": "testValue",
+    "newValue": null,
+    "pid": 3336
+  },
+  {
+    "timestamp": "2025-09-23T01:24:04.049Z",
+    "key": "enablePositionLogging",
+    "oldValue": true,
+    "newValue": true,
+    "pid": 8592
+  },
+  {
+    "timestamp": "2025-09-23T01:24:04.051Z",
+    "key": "defaultTakeProfit",
+    "oldValue": "auto",
+    "newValue": "auto",
+    "pid": 8592
+  },
+  {
+    "timestamp": "2025-09-23T01:24:04.054Z",
+    "key": "defaultStopLoss",
+    "oldValue": "auto",
+    "newValue": "auto",
+    "pid": 8592
+  },
+  {
+    "timestamp": "2025-09-23T01:24:04.056Z",
+    "key": "defaultTimeframe",
+    "oldValue": "1Min",
+    "newValue": "1Min",
+    "pid": 8592
+  },
+  {
+    "timestamp": "2025-09-23T01:24:04.059Z",
+    "key": "enableCrossunderSignals",
+    "oldValue": false,
+    "newValue": true,
+    "pid": 8592
+  },
+  {
+    "timestamp": "2025-09-23T01:24:04.060Z",
+    "key": "enablePerformanceMetrics",
+    "oldValue": false,
+    "newValue": true,
+    "pid": 8592
+  }
+]

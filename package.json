@@ -1,0 +1,65 @@
+{
+  "name": "bitflow",
+  "version": "1.0.0",
+  "description": "Advanced Crypto Trading Bot with Machine Learning & AI Integration",
+  "main": "src/BitFlow.js",
+  "scripts": {
+    "start": "node src/BitFlow.js",
+    "test": "node src/tests/test_llama_final.js",
+    "test-all": "node src/tests/test_enhanced_features.js",
+    "test-llama": "node src/tests/test_llama_final.js",
+    "test-llama-simple": "node src/tests/test_llama_simple.js",
+    "test-llama-optimized": "node src/tests/test_llama_optimized.js",
+    "test-llama-professional": "node src/tests/test_llama_professional.js",
+    "test-llama-comprehensive": "node src/tests/test_llama_comprehensive.js",
+    "test-llama-math": "node src/tests/test_llama_math.js",
+    "install-python-deps": "python -m pip install llama-cpp-python huggingface_hub",
+    "tune-llama": "node scripts/tune_llama_parameters.js",
+    "train-llama": "node scripts/auto_train_llama.js",
+    "training-status": "node scripts/auto_train_llama.js --status",
+    "setup": "npm install && npm run install-python-deps"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MeridianAlgo/Bitflow.git"
+  },
+  "keywords": [
+    "crypto",
+    "trading",
+    "bot",
+    "machine-learning",
+    "ai",
+    "llama",
+    "alpaca",
+    "bitcoin",
+    "ethereum"
+  ],
+  "author": "MeridianAlgo",
+  "license": "MIT",
+  "dependencies": {
+    "@alpacahq/alpaca-trade-api": "^1.4.2",
+    "@api/testalpacadocs": "file:.api/apis/testalpacadocs",
+    "@huggingface/inference": "^2.8.0",
+    "@huggingface/transformers": "^3.7.3",
+    "@tensorflow/tfjs": "^4.22.0",
+    "@xenova/transformers": "^2.17.2",
+    "axios": "^1.10.0",
+    "chalk": "^4.1.2",
+    "cheerio": "^1.1.0",
+    "cryptowatch-api": "^0.1.1",
+    "dotenv": "^16.5.0",
+    "enquirer": "^2.4.1",
+    "fetch": "^1.1.0",
+    "node-cron": "^4.1.1",
+    "node-fetch": "^2.7.0",
+    "node-notifier": "^10.0.1",
+    "ora": "^5.4.1",
+    "technicalindicators": "^3.1.0",
+    "ws": "^8.18.2",
+    "xml2js": "^0.6.2",
+    "yahoo-finance2": "^2.13.3"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
