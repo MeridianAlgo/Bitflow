@@ -728,53 +728,19 @@ For enterprise support, custom development, or consulting services, please conta
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the [MIT License](LICENSE)
+
+---
+## A Quick Disclaimer
+
+This material is for informational purposes only and does not constitute financial, investment, legal, tax, or accounting advice. It is not intended to provide personalized recommendations or solicitations to buy or sell any securities or financial products.
+Investing involves substantial risks, including the potential loss of principal. Market conditions, economic factors, and other variables can lead to volatility and losses. Past performance is not indicative of future results; historical returns do not guarantee similar outcomes.
+Always consult a qualified financial advisor, attorney, or tax professional to assess your specific situation, risk tolerance, and objectives before making any investment decisions. We assume no liability for actions taken based on this information.
 
 ---
 
-## 🎉 Acknowledgments
+**Made with ❤️ by Quantum Meridian (A MeridianAlgo Team)**
 
-- **Alpaca Markets**: Trading API and data feeds
-- **Polygon.io**: Market data and news aggregation
-- **Yahoo Finance**: Fallback data source
-- **TensorFlow.js**: Machine learning capabilities
-- **Hugging Face**: Transformer models and datasets
-- **Technical Indicators**: Comprehensive technical analysis library
-- **Open Source Community**: All contributors and supporters
+*Empowering the next generation of quantitative finance professionals through hands-on learning and practical implementation.*
 
----
 
-**Happy Trading! 🚀📈**
-
-*Built with ❤️ by the MeridianAlgo team*
-
----
-
-## 📖 Additional Resources
-
-### Documentation Files
-- **[10_SECOND_WAIT_SUMMARY.md](documentation/10_SECOND_WAIT_SUMMARY.md)** - Wait period implementation
-- **[BITFLOW_FIX_SPEC.md](documentation/BITFLOW_FIX_SPEC.md)** - Bug fixes and improvements
-- **[EFFICIENT_LLM_SYSTEM_SUMMARY.md](documentation/EFFICIENT_LLM_SYSTEM_SUMMARY.md)** - AI system details
-- **[ENHANCED_MEMORY_SYSTEM_SUMMARY.md](documentation/ENHANCED_MEMORY_SYSTEM_SUMMARY.md)** - Memory management
-- **[ENHANCEMENT_SUMMARY.md](documentation/ENHANCEMENT_SUMMARY.md)** - Feature enhancements
-- **[NEW_SETTINGS_INTERFACE_SUMMARY.md](documentation/NEW_SETTINGS_INTERFACE_SUMMARY.md)** - Settings system
-- **[SETTINGS_BUG_FIX_SUMMARY.md](documentation/SETTINGS_BUG_FIX_SUMMARY.md)** - Settings fixes
-- **[TRADE_ERROR_FIX_SUMMARY.md](documentation/TRADE_ERROR_FIX_SUMMARY.md)** - Error handling
-- **[YAHOO_FINANCE_INTEGRATION_SUMMARY.md](documentation/YAHOO_FINANCE_INTEGRATION_SUMMARY.md)** - Data integration
-
-### Testing Files
-- **[test_enhanced_features.js](tests/test_enhanced_features.js)** - Enhanced features testing
-- **[test_fast_models.js](tests/test_fast_models.js)** - Model performance testing
-- **[test_final_integration.js](tests/test_final_integration.js)** - Full system integration
-- **[test_trading_mechanisms.js](tests/test_trading_mechanisms.js)** - Trading logic testing
-
-### Debug Tools
-- **[debug_settings.js](debug_tools/debug_settings.js)** - Settings debugging
-- **[quick_bitflow_test.js](debug_tools/quick_bitflow_test.js)** - Quick functionality test
-- **[run_bitflow_test.js](debug_tools/run_bitflow_test.js)** - Test runner
-- **[show_bitflow_output.js](debug_tools/show_bitflow_output.js)** - Output monitoring
-
----
-
-*For the most up-to-date information, please refer to the individual documentation files and code comments.*
