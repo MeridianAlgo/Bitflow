@@ -622,6 +622,52 @@ class BitFlow {
                 console.error('❌ STOPPING PROGRAM - Data integrity issue.');
                 process.exit(1); // Stop the program completely
             }
+
+            // Calculate MA crossover information for display
+            const recentPrices = prices.slice(-100);
+            const volatility = this.calculateVolatility(recentPrices);
+            let fastLength = Math.max(5, Math.round((this.baseLength || 20) - (this.volScale || 10) * volatility));
+            let slowLength = Math.max(fastLength + 5, Math.round((this.baseLength || 20) + (this.volScale || 10) * volatility));
+            
+            const fastMA = require('technicalindicators').SMA.calculate({ period: fastLength, values: prices });
+            const slowMA = require('technicalindicators').EMA.calculate({ period: slowLength, values: prices });
+            const rsi = this.calculateRSI(prices, this.rsiPeriod || 14);
+            
+            const currentPrice = prices[prices.length - 1];
+            const currentFastMA = fastMA[fastMA.length - 1];
+            const currentSlowMA = slowMA[slowMA.length - 1];
+            const currentRSI = rsi[rsi.length - 1];
+            
+            // Display MA Crossover Information
+            const logger = require('./logger');
+            logger.market('📊 MA CROSSOVER STATUS');
+            logger.market(`Current Price: $${currentPrice.toFixed(4)}`);
+            logger.market(`Fast MA (${fastLength}): $${currentFastMA.toFixed(4)}`);
+            logger.market(`Slow MA (${slowLength}): $${currentSlowMA.toFixed(4)}`);
+            logger.market(`RSI: ${currentRSI.toFixed(2)}`);
+            
+            // Determine crossover status and what's needed for buy signal
+            const isFastAboveSlow = currentFastMA > currentSlowMA;
+            const crossoverPrice = currentSlowMA; // Price that fast MA needs to cross
+            const rsiInBuyRange = currentRSI >= 0 && currentRSI <= 70;
+            
+            if (isFastAboveSlow) {
+                logger.market(`✅ Fast MA is ABOVE Slow MA (Bullish)`);
+                logger.market(`🎯 For BUY signal: Wait for pullback and re-cross above $${crossoverPrice.toFixed(4)}`);
+            } else {
+                logger.market(`❌ Fast MA is BELOW Slow MA (Bearish)`);
+                logger.market(`🎯 For BUY signal: Fast MA must cross above $${crossoverPrice.toFixed(4)}`);
+            }
+            
+            if (rsiInBuyRange) {
+                logger.market(`✅ RSI in buy range (0-70): ${currentRSI.toFixed(2)}`);
+            } else {
+                logger.market(`❌ RSI outside buy range (0-70): ${currentRSI.toFixed(2)}`);
+            }
+            
+            logger.market(`🔄 Next update in ${this.timeframe === '5Min' ? '5' : '1'} minute(s)`);
+            printDivider();
+
             await this.checkSignals(prices);
             if (this.userSettings.enablePositionLogging) {
                 try {

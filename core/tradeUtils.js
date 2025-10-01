@@ -1,13 +1,18 @@
 // core/tradeUtils.js
 
 // This file will contain trading/order execution logic for BitFlow.
-// For now, export a placeholder. The real logic will be moved from BitFlow.js.
-
 const fs = require('fs');
 const path = require('path');
 const { SMA, EMA } = require('technicalindicators');
 const { printStatus, printSuccess, printWarning, printError, printBanner, printCard } = require('./ui');
 const { analyzeSentiment } = require('./apiHelpers');
+
+// Global variable to track MA crossover check timing
+let lastMACrossoverCheck = 0;
+const MA_CROSSOVER_INTERVAL = 5 * 60 * 1000; // 5 minutes in milliseconds
+
+// Store MA crossover threshold for buy signals
+let maCrossoverThreshold = null;
 
 function logApiError(context, error) {
     const logPath = path.join(__dirname, '../api_errors.log');
@@ -22,6 +27,107 @@ function logApiError(context, error) {
     }
     const logEntry = `[${timestamp}] [${context}] ${details}\n`;
     fs.appendFileSync(logPath, logEntry, 'utf8');
+}
+
+// Function to calculate MA crossover threshold for buy signals
+async function calculateMACrossoverThreshold(monitor) {
+    try {
+        const prices = await monitor.getCryptoData();
+        if (!prices || prices.length < 50) {
+            printWarning('Insufficient price data for MA crossover calculation');
+            return null;
+        }
+
+        // Calculate volatility for adaptive MA lengths
+        const volatility = monitor.calculateVolatility(prices.slice(-100));
+        const volScale = monitor.volScale || 10;
+        const baseLength = monitor.baseLength || 20;
+
+        // Adaptive MA lengths based on volatility
+        const fastLength = Math.max(5, Math.round(baseLength - volScale * volatility));
+        const slowLength = Math.max(fastLength + 5, Math.round(baseLength + volScale * volatility));
+
+        // Calculate MAs
+        const fastMA = SMA.calculate({ period: fastLength, values: prices });
+        const slowMA = EMA.calculate({ period: slowLength, values: prices });
+
+        if (fastMA.length === 0 || slowMA.length === 0) {
+            printWarning('Insufficient MA data for crossover calculation');
+            return null;
+        }
+
+        const currentFastMA = fastMA[fastMA.length - 1];
+        const currentSlowMA = slowMA[slowMA.length - 1];
+
+        // Check if fast MA is above slow MA (bullish crossover condition)
+        const isBullishCrossover = currentFastMA > currentSlowMA;
+
+        if (isBullishCrossover) {
+            // Calculate the crossover threshold - price must be above this to buy
+            const crossoverThreshold = Math.max(currentFastMA, currentSlowMA);
+            return {
+                threshold: crossoverThreshold,
+                fastMA: currentFastMA,
+                slowMA: currentSlowMA,
+                fastLength: fastLength,
+                slowLength: slowLength,
+                isBullish: true,
+                timestamp: new Date().toISOString()
+            };
+        } else {
+            // Bearish - fast MA below slow MA, no buy signals allowed
+            return {
+                threshold: null, // No buy threshold when bearish
+                fastMA: currentFastMA,
+                slowMA: currentSlowMA,
+                fastLength: fastLength,
+                slowLength: slowLength,
+                isBullish: false,
+                timestamp: new Date().toISOString()
+            };
+        }
+    } catch (error) {
+        printWarning('Error calculating MA crossover threshold: ' + error.message);
+        return null;
+    }
+}
+
+// Function to check if buy signal should be allowed based on MA crossover
+async function shouldAllowBuySignal(monitor) {
+    const now = Date.now();
+    const timeSinceLastCheck = now - lastMACrossoverCheck;
+
+    // Check every 5 minutes
+    if (timeSinceLastCheck >= MA_CROSSOVER_INTERVAL) {
+        lastMACrossoverCheck = now;
+
+        const crossoverData = await calculateMACrossoverThreshold(monitor);
+        if (crossoverData) {
+            maCrossoverThreshold = crossoverData;
+
+            // Display MA crossover status
+            const currentPrice = monitor.currentPrice;
+            if (currentPrice) {
+                const isAboveThreshold = crossoverData.isBullish && currentPrice > crossoverData.threshold;
+
+                printStatus(`📊 MA Crossover Check (${new Date().toLocaleTimeString()}):`);
+                printStatus(`   Current Price: $${currentPrice.toFixed(2)}`);
+                printStatus(`   Fast MA (${crossoverData.fastLength}): $${crossoverData.fastMA.toFixed(2)}`);
+                printStatus(`   Slow MA (${crossoverData.slowLength}): $${crossoverData.slowMA.toFixed(2)}`);
+
+                if (crossoverData.isBullish) {
+                    printStatus(`   MA Crossover Price: $${crossoverData.threshold.toFixed(2)}`);
+                    printStatus(`   Buy Signal Allowed: ${isAboveThreshold ? '✅ YES' : '❌ NO (price below threshold)'}`);
+                } else {
+                    printStatus(`   Status: Bearish (Fast MA < Slow MA) - No buy signals allowed`);
+                }
+            }
+        }
+    }
+
+    // Return whether buy signals are currently allowed
+    return maCrossoverThreshold && maCrossoverThreshold.isBullish &&
+           monitor.currentPrice > maCrossoverThreshold.threshold;
 }
 
 async function logPositionTrade(monitor, tradeData) {
@@ -519,4 +625,4 @@ async function executeTrade(monitor, signal) {
     }
 }
 
-module.exports = { executeTrade, monitorTakeProfitStopLoss, logPositionTrade }; 
+module.exports = { executeTrade, monitorTakeProfitStopLoss, logPositionTrade, calculateMACrossoverThreshold, shouldAllowBuySignal }; 

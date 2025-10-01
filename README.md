@@ -1,15 +1,6 @@
 # BitFlow 🚀
 
-**Advanced Crypto Trading Bot with Machine Learning & AI Integration**
-
-BitFlow is a sophisticated cryptocurrency trading bot built for Node.js that combines traditional technical analysis with cutting-edge machine learning algorithms, AI-powered position sizing, and comprehensive backtesting capabilities. It features a professional CLI interface, dynamic risk management, real-time market sentiment analysis, and intelligent model selection.
-
-## 🆕 Latest Updates
-
-- **Google News API Integration**: Replaced Polygon API with direct Google News RSS feed integration for market sentiment analysis
-- **Enhanced Backtesting**: Improved exit reason analysis with more diverse and meaningful exit conditions
-- **Reduced Console Clutter**: New logging system with configurable verbosity levels
-- **Market Status Check**: Updated to use the new Google News API for crypto market status
+**BitFlow** is a Node.js-first research and paper-trading toolkit that blends technical indicators, lightweight machine-learning models, and curated news sentiment to prototype digital asset strategies quickly. The project is maintained by Quantum Meridian (MeridianAlgo) and supports both live paper trading and offline analysis workflows.
 
 ![BitFlow Logo](core/bitflow_logo.png)
 
@@ -641,55 +632,6 @@ $env:BITFLOW_MIN_UI=0; node bitflow.js BTC/USD
 
 ---
 
-## 🤝 Contributing
-
-We welcome contributions! Here's how to get started:
-
-### Development Setup
-```bash
-# Clone the repository
-git clone https://github.com/MeridianAlgo/Bitflow.git
-cd Bitflow
-
-# Install dependencies
-npm install
-
-# Run tests
-npm test
-
-# Start development
-$env:BITFLOW_MIN_UI=0; node bitflow.js BTC/USD
-```
-
-### Contribution Guidelines
-
-#### Code Standards
-- Use consistent formatting and style
-- Add comments for complex logic
-- Follow existing patterns and conventions
-- Include error handling
-
-#### Testing Requirements
-- Add tests for new features
-- Update existing tests for changes
-- Ensure all tests pass before submitting
-- Include both unit and integration tests
-
-#### Documentation
-- Update relevant documentation files
-- Add inline code comments
-- Include usage examples
-- Update README if needed
-
-### Pull Request Process
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests and documentation
-5. Submit a pull request with detailed description
-
----
-
 ## 📞 Support & Community
 
 ### Getting Help
@@ -704,26 +646,6 @@ $env:BITFLOW_MIN_UI=0; node bitflow.js BTC/USD
 - **Discussions**: Community support and ideas
 - **Wiki**: Additional documentation and guides
 
-### Professional Support
-For enterprise support, custom development, or consulting services, please contact the development team.
-
----
-
-## 🚨 Risk Disclaimer
-
-**⚠️ IMPORTANT: This software is for educational and research purposes only.**
-
-- Cryptocurrency trading involves substantial risk of loss and is not suitable for everyone
-- Past performance does not guarantee future results
-- Always conduct your own research before making investment decisions
-- Consider consulting with a financial advisor
-- The developers are not responsible for any financial losses
-- Use paper trading to test strategies before live trading
-- Never invest more than you can afford to lose
-- Understand that leverage can amplify both gains and losses
-
-**Always trade responsibly and never risk more than you can afford to lose.**
-
 ---
 
 ## 📄 License
@@ -731,50 +653,16 @@ For enterprise support, custom development, or consulting services, please conta
 This project is licensed under the MIT License - see the [LICENSE](License) file for details.
 
 ---
+## A Quick Disclaimer
 
-## 🎉 Acknowledgments
-
-- **Alpaca Markets**: Trading API and data feeds
-- **Polygon.io**: Market data and news aggregation
-- **Yahoo Finance**: Fallback data source
-- **TensorFlow.js**: Machine learning capabilities
-- **Hugging Face**: Transformer models and datasets
-- **Technical Indicators**: Comprehensive technical analysis library
-- **Open Source Community**: All contributors and supporters
+This material is for informational purposes only and does not constitute financial, investment, legal, tax, or accounting advice. It is not intended to provide personalized recommendations or solicitations to buy or sell any securities or financial products.
+Investing involves substantial risks, including the potential loss of principal. Market conditions, economic factors, and other variables can lead to volatility and losses. Past performance is not indicative of future results; historical returns do not guarantee similar outcomes.
+Always consult a qualified financial advisor, attorney, or tax professional to assess your specific situation, risk tolerance, and objectives before making any investment decisions. We assume no liability for actions taken based on this information.
 
 ---
 
-**Happy Trading! 🚀📈**
+**Made with ❤️ by Quantum Meridian (A MeridianAlgo Team)**
 
-*Built with ❤️ by the MeridianAlgo team*
+*Empowering the next generation of quantitative finance professionals through hands-on learning and practical implementation.*
 
----
 
-## 📖 Additional Resources
-
-### Documentation Files
-- **[10_SECOND_WAIT_SUMMARY.md](documentation/10_SECOND_WAIT_SUMMARY.md)** - Wait period implementation
-- **[BITFLOW_FIX_SPEC.md](documentation/BITFLOW_FIX_SPEC.md)** - Bug fixes and improvements
-- **[EFFICIENT_LLM_SYSTEM_SUMMARY.md](documentation/EFFICIENT_LLM_SYSTEM_SUMMARY.md)** - AI system details
-- **[ENHANCED_MEMORY_SYSTEM_SUMMARY.md](documentation/ENHANCED_MEMORY_SYSTEM_SUMMARY.md)** - Memory management
-- **[ENHANCEMENT_SUMMARY.md](documentation/ENHANCEMENT_SUMMARY.md)** - Feature enhancements
-- **[NEW_SETTINGS_INTERFACE_SUMMARY.md](documentation/NEW_SETTINGS_INTERFACE_SUMMARY.md)** - Settings system
-- **[SETTINGS_BUG_FIX_SUMMARY.md](documentation/SETTINGS_BUG_FIX_SUMMARY.md)** - Settings fixes
-- **[TRADE_ERROR_FIX_SUMMARY.md](documentation/TRADE_ERROR_FIX_SUMMARY.md)** - Error handling
-- **[YAHOO_FINANCE_INTEGRATION_SUMMARY.md](documentation/YAHOO_FINANCE_INTEGRATION_SUMMARY.md)** - Data integration
-
-### Testing Files
-- **[test_enhanced_features.js](tests/test_enhanced_features.js)** - Enhanced features testing
-- **[test_fast_models.js](tests/test_fast_models.js)** - Model performance testing
-- **[test_final_integration.js](tests/test_final_integration.js)** - Full system integration
-- **[test_trading_mechanisms.js](tests/test_trading_mechanisms.js)** - Trading logic testing
-
-### Debug Tools
-- **[debug_settings.js](debug_tools/debug_settings.js)** - Settings debugging
-- **[quick_bitflow_test.js](debug_tools/quick_bitflow_test.js)** - Quick functionality test
-- **[run_bitflow_test.js](debug_tools/run_bitflow_test.js)** - Test runner
-- **[show_bitflow_output.js](debug_tools/show_bitflow_output.js)** - Output monitoring
-
----
-
-*For the most up-to-date information, please refer to the individual documentation files and code comments.*
