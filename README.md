@@ -650,7 +650,7 @@ $env:BITFLOW_MIN_UI=0; node bitflow.js BTC/USD
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](License) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE.txt) file for details.
 
 ---
 ## A Quick Disclaimer
