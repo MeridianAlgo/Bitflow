@@ -2,8 +2,6 @@
 
 **BitFlow** is a Node.js-first research and paper-trading toolkit that blends technical indicators, lightweight machine-learning models, and curated news sentiment to prototype digital asset strategies quickly. The project is maintained by Quantum Meridian (MeridianAlgo) and supports both live paper trading and offline analysis workflows.
 
-![BitFlow Logo](core/bitflow_logo.png)
-
 ---
 
 ## 🌟 Key Features
