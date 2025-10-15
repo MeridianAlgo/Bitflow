@@ -83,6 +83,16 @@ class BitFlowBot {
                     { name: 'Manual (Fixed percentages)', value: 'manual' }
                 ],
                 default: 'ml'
+            },
+            {
+                type: 'list',
+                name: 'positionSizing',
+                message: 'Position sizing method:',
+                choices: [
+                    { name: 'ML-Based (Dynamic, timeframe-adjusted)', value: 'ml' },
+                    { name: 'Manual (Fixed 0.001 BTC)', value: 'manual' }
+                ],
+                default: 'ml'
             }
         ];
 
@@ -102,28 +112,15 @@ class BitFlowBot {
                     },
                     filter: (input) => parseFloat(input)
                 },
-                {
-                    type: 'list',
-                    name: 'positionSizing',
-                    message: 'Position sizing method:',
-                    choices: [
-                        { name: 'ML-Based (Adaptive based on timeframe and volatility)', value: 'ml' },
-                        { name: 'Manual (Fixed 0.001 BTC)', value: 'manual' }
-                    ],
-                    default: 'ml'
-                },
             ];
             const manualAnswers = await inquirer.prompt(manualQuestions);
             Object.assign(answers, manualAnswers);
-        } else {
-            // ML risk mode: default to ML-based position sizing
-            answers.positionSizing = 'ml';
         }
 
         console.log(`\nConfiguration: ${answers.symbol} on ${answers.timeframe}`);
         if (answers.riskMode === 'ml') {
             console.log(`TP/SL: ${chalk.cyan('ML-Based')} (Adaptive ATR + Volatility Analysis)`);
-            console.log(`Position Sizing: ${chalk.cyan('Dynamic (Adaptive based on timeframe)')}\n`);
+            console.log(`Position Sizing: ${chalk.cyan(answers.positionSizing === 'ml' ? 'Dynamic (Adaptive based on timeframe)' : 'Fixed (0.001 BTC)')}\n`);
         } else {
             console.log(`TP/SL: ${answers.stopLossPercent}% SL, ${(answers.stopLossPercent * answers.riskRewardRatio).toFixed(2)}% TP (${answers.riskRewardRatio}:1)`);
             console.log(`Position Sizing: Fixed (0.001 BTC)\n`);
