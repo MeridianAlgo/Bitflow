@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Environment variables
+.env
+
+# Historical data (optional - remove if you want to commit data)
+historical_data/*.csv
+
+# Logs
+logs/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*.temp
+
+# Python virtual environments (if any)
+venv/
+env/
+bitflow-env/
+
+# Build outputs
+dist/
+build/
+
+# Kiro
+.kiro/
