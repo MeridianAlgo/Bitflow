@@ -158,7 +158,7 @@ class MLRiskManager {
         let stopLossPercent = (stopLossDistance / currentPrice * 100);
         stopLossPercent = Math.max(this.minStopLossPercent, Math.min(this.maxStopLossPercent, stopLossPercent));
         stopLossDistance = currentPrice * (stopLossPercent / 100);
-        const stopLoss = currentPrice - stopLossDistance;
+        let stopLoss = currentPrice - stopLossDistance;
 
         // Dynamic R:R based on trend strength
         // Strong trends get higher R:R ratios

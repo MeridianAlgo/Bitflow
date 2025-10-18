@@ -46,7 +46,7 @@ try {
     console.log('\nSetup complete!');
     console.log('\nNext steps:');
     console.log('1. Edit .env file with your Alpaca API credentials');
-    console.log('2. Run: node BitFlow.js');
+    console.log('2. Run: node src/bitFlow.js');
     console.log('\nHappy trading!');
     
 } catch (error) {

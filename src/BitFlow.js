@@ -411,16 +411,7 @@ class BitFlowBot {
 
                 const timestamp = new Date().toLocaleTimeString();
 
-                // Calculate top 3 MA scores for current price (if optimization results available)
                 let top3MAs = '';
-                if (this.optimizedStrategy.allResults && initializationComplete) {
-                    const top3 = this.optimizedStrategy.allResults
-                        .sort((a, b) => b.score - a.score)
-                        .slice(0, 3)
-                        .map((ma, idx) => `${idx + 1}. ${ma.type}(${ma.length}): ${(ma.score * 100).toFixed(1)}%`)
-                        .join(' | ');
-                    top3MAs = ` | Top MAs: ${top3}`;
-                }
 
                 // Position monitoring with REAL-TIME single-line animation (updates every second)
                 if (position) {
@@ -454,7 +445,7 @@ class BitFlowBot {
 
                     // Print NEW line every 60 seconds (1 minute) OR during initialization
                     if (timeSinceLastLog >= 60000 || !initializationComplete) {
-                        console.log(`[${timestamp}] Price ${currentPrice.toFixed(2)} | MA ${currentMA.toFixed(2)} | ${signal.action} | ${priceVsMA} (${maDiffDisplay}) | ${posStatus}${top3MAs}`);
+                        console.log(`[${timestamp}] Price ${currentPrice.toFixed(2)} | MA ${currentMA.toFixed(2)} | ${signal.action} | ${priceVsMA} (${maDiffDisplay}) | ${posStatus}`);
                         lastLogTime = now;
                     }
                 }
@@ -596,19 +587,21 @@ class BitFlowBot {
                 // Dynamic sleep: 1 second when in position (real-time monitoring), 30 seconds when not
                 await this.sleep(sleepInterval);
             } catch (error) {
-                console.error('\nTrading Error');
-                console.error(`Reason: ${error.message}`);
-                console.error('\nPossible causes:');
-                console.error('  - API connection lost');
-                console.error('  - Invalid price data');
-                console.error('  - Order execution failed\n');
+                console.error(`\n${chalk.red('⚠️  Trading Error')}: ${error.message}`);
+                console.error(`Error type: ${error.constructor.name}`);
+                
+                // Show stack trace for debugging
+                if (process.env.DEBUG === 'true') {
+                    console.error('Stack trace:', error.stack);
+                }
 
                 // Exit on critical errors
-                if (error.message.includes('Failed to get') || error.message.includes('Request failed')) {
-                    console.error('Critical error - exiting bot\n');
+                if (error.message.includes('Failed to get') || error.message.includes('Request failed') || error.message.includes('ECONNREFUSED')) {
+                    console.error(`${chalk.red('Critical error - exiting bot')}\n`);
                     process.exit(1);
                 }
 
+                console.log(`${chalk.yellow('Retrying in 5 seconds...')}\n`);
                 await this.sleep(5000);
             }
         }

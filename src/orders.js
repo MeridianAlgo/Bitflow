@@ -122,18 +122,19 @@ class OrderManager {
             console.log(`💵 Current price: $${currentPrice.toFixed(4)}`);
 
             // Calculate position size if not provided
-            if (!quantity) {
-                quantity = this.calculatePositionSize(availableCash, currentPrice, maxRiskPercent);
-                console.log(`📏 Calculated position size: ${quantity} (${maxRiskPercent}% risk)`);
+            let finalQuantity = quantity;
+            if (!finalQuantity) {
+                finalQuantity = this.calculatePositionSize(availableCash, currentPrice, maxRiskPercent);
+                console.log(`📏 Calculated position size: ${finalQuantity} (${maxRiskPercent}% risk)`);
             }
 
             // Validate calculated quantity
-            if (!quantity || quantity <= 0) {
+            if (!finalQuantity || finalQuantity <= 0) {
                 throw new Error('Invalid calculated quantity for buy order');
             }
 
             // Safety checks
-            const orderValue = quantity * currentPrice;
+            const orderValue = finalQuantity * currentPrice;
             if (orderValue > availableCash) {
                 throw new Error(`Insufficient funds: Order value $${orderValue.toFixed(2)} > Available $${availableCash.toFixed(2)}`);
             }
@@ -152,7 +153,7 @@ class OrderManager {
             // Prepare order with enhanced parameters
             const orderParams = {
                 symbol: symbol.replace('/', ''),
-                qty: quantity,
+                qty: finalQuantity,
                 side: 'buy',
                 type: 'market',
                 time_in_force: 'gtc',
@@ -202,7 +203,7 @@ class OrderManager {
                 id: order.id,
                 symbol: symbol,
                 side: 'buy',
-                quantity: quantity,
+                quantity: finalQuantity,
                 timestamp: new Date(),
                 status: 'submitted'
             });
@@ -255,15 +256,16 @@ class OrderManager {
             }
 
             const availableQuantity = parseFloat(position.qty);
-            if (quantity > availableQuantity) {
-                console.log(`⚠️ Requested quantity (${quantity}) exceeds available (${availableQuantity})`);
-                quantity = availableQuantity; // Sell all available
+            let finalQuantity = quantity;
+            if (finalQuantity > availableQuantity) {
+                console.log(`⚠️ Requested quantity (${finalQuantity}) exceeds available (${availableQuantity})`);
+                finalQuantity = availableQuantity; // Sell all available
             }
 
             // Prepare order
             const orderParams = {
                 symbol: symbol.replace('/', ''),
-                qty: quantity,
+                qty: finalQuantity,
                 side: 'sell',
                 type: 'market',
                 time_in_force: 'gtc'
@@ -284,7 +286,7 @@ class OrderManager {
                 id: order.id,
                 symbol: symbol,
                 side: 'sell',
-                quantity: quantity,
+                quantity: finalQuantity,
                 timestamp: new Date(),
                 status: 'submitted'
             });
@@ -569,25 +571,6 @@ class OrderManager {
         }
     }
 
-
-
-    /**
-     * Calculate position size based on account balance and risk
-     */
-    calculatePositionSize(accountBalance, price, riskPercent = 1.0) {
-        try {
-            const riskAmount = accountBalance * (riskPercent / 100);
-            const quantity = riskAmount / price;
-
-            // Round to 6 decimal places for crypto precision
-            return Math.floor(quantity * 1000000) / 1000000;
-
-        } catch (error) {
-            console.error('❌ Error calculating position size:', error.message);
-            return 0;
-        }
-    }
-
     /**
      * Get order history
      */
@@ -602,8 +585,8 @@ class OrderManager {
         try {
             // Use REST API to get price (more reliable than getLatestTrade)
             const axios = require('axios');
-            const apiKey = process.env.ALPACA_API_KEY_ID;
-            const secretKey = process.env.ALPACA_SECRET_KEY;
+            let apiKey = process.env.ALPACA_API_KEY_ID;
+            let secretKey = process.env.ALPACA_SECRET_KEY;
             
             const url = `https://data.alpaca.markets/v1beta3/crypto/us/latest/trades?symbols=${symbol}`;
             
@@ -631,6 +614,7 @@ class OrderManager {
             return basePrice * (1 + (Math.random() - 0.5) * 0.01);
 
         } catch (error) {
+            console.error(`Error in getCurrentPrice for ${symbol}:`, error.message);
             // Silent fallback
             const basePrices = {
                 'BTC/USD': 67000,
