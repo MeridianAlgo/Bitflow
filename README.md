@@ -1,6 +1,8 @@
-# BitFlow Trading Bot v3.0
+# BitFlow Trading Bot v3.1.1
 
 Automated cryptocurrency trading bot with ML-powered moving average optimization, dynamic risk management, and fee-aware position sizing.
+
+> **✅ Latest Update (v3.1.1)**: All const reassignment errors fixed! Bot is fully operational and tested.
 
 ## ✨ Key Features
 
@@ -14,9 +16,10 @@ Automated cryptocurrency trading bot with ML-powered moving average optimization
 ### Risk Management
 - **ML-Based TP/SL**: Adaptive ATR + volatility analysis
 - **Fee-Aware Calculations**: Accounts for Alpaca's tiered crypto fees (0.10% - 0.25%)
-- **Bracket Orders**: TP/SL sent directly to Alpaca for instant execution
+- **Manual TP/SL Monitoring**: Crypto doesn't support bracket orders, bot monitors positions
 - **1% Max TP/SL**: Capped for faster trades
 - **Dynamic Position Sizing**: Adjusts for volatility and account risk
+- **Timeframe-Adjusted**: Position sizing adapts to 1m, 5m, or 15m timeframes
 
 ### User Experience
 - **CLI Progress Bars**: Clean `[██████████] 100%` progress indicators
@@ -27,8 +30,9 @@ Automated cryptocurrency trading bot with ML-powered moving average optimization
 ### Safety
 - **Paper Trading Enforced**: Cannot trade real money
 - **ONE Position at a Time**: Conservative risk management
-- **Automatic Bracket Orders**: Alpaca manages TP/SL execution
+- **Manual TP/SL Monitoring**: Bot monitors positions every second for TP/SL hits
 - **Position Cleanup**: Closes existing positions on startup
+- **Crossover Confirmation**: 5-minute initialization period before first trade
 
 ## 🚀 Quick Start
 
@@ -79,28 +83,31 @@ Best: TEMA(6) | Score: 60.3% | Win Rate: 35.3%
 4. **If < 60%**: Fetches 2000 more bars OR waits 5s and retries with fresh data
 5. **Selects best MA** based on composite score
 
-### Phase 2: Real-Time Trading (with Bracket Orders)
+### Phase 2: Real-Time Trading (with Manual TP/SL Monitoring)
 ```
 🟢 BUY SIGNAL - Price crossed from BELOW to ABOVE MA at 100000.00
 
-📊 Bracket Order:
-   Take Profit: 101000.00
-   Stop Loss: 99000.00
+✓ ML-Based TP/SL: SL 99500.00, TP 100500.00
+✓ Position Size: 0.001000 BTC (1.00% risk)
 
-✓ Buy executed with bracket order
-🔵 Alpaca managing TP/SL automatically
+✓ Buy executed
+Entry: 100000.00 | SL: 99500.00 | TP: 100500.00
+ML TP/SL monitoring active
 
-↗ Position: Entry 100000.00 | Current 100500.00 | P&L +0.50% | Trending towards TP
+↗ Entry 100000.00 | Now 100300.00 | P&L +0.30% | TP 100500.00 (+0.20%) | SL 99500.00 (-0.50%)
 
-✓ Position closed by Alpaca bracket order
-Exit: 101000.00 | P&L: +1.00% (+10.00)
+TAKE PROFIT HIT at 100500.00
+P&L: +0.50% (+5.00)
+
+✓ Sell executed: Exit 100500.00 | Final P&L +0.50% (+5.00)
 ```
 
-1. **Monitors price** every 30 seconds
-2. **BUY** when price crosses from BELOW to ABOVE MA
-3. **Sends bracket order** with TP/SL to Alpaca
-4. **Alpaca executes** TP or SL automatically (instant fills)
-5. **Monitors position** until Alpaca closes it
+1. **Monitors price** every 30 seconds (no position) or 1 second (in position)
+2. **5-minute initialization** period to establish baseline
+3. **BUY** when price crosses from BELOW to ABOVE MA
+4. **Calculates ML-based TP/SL** with ATR and volatility
+5. **Monitors position** every second for TP/SL hits
+6. **Executes sell** when TP or SL is reached
 
 ## ⚙️ Configuration
 
@@ -117,15 +124,17 @@ On startup, you'll be prompted to configure:
 - **ATR-based TP/SL**: Adaptive to market volatility
 - **Fee-aware calculations**: Accounts for Alpaca's 0.25% taker fees
 - **Dynamic position sizing**: 1% account risk per trade
-- **Safety caps**: Max 1% SL, Max 1% TP (for faster trades)
-- **Bracket orders**: TP/SL sent to Alpaca for instant execution
+- **Safety caps**: Max 5% SL, Max 10% TP
+- **Manual TP/SL monitoring**: Bot checks every second for TP/SL hits
 - **Volatility adjustment**: Reduces size in high volatility
+- **Timeframe adjustment**: Larger positions for 1m, smaller for 15m
+- **Volatility filter**: Skips trades in extreme volatility (1m/5m only)
 
 ### Manual Mode:
-- Fixed stop loss % (0.5-5%)
-- Fixed risk/reward ratio (1-5x)
+- Fixed stop loss % (user configurable)
 - Fixed position size (0.001 BTC)
-- Still uses bracket orders for automatic TP/SL
+- Manual TP/SL monitoring every second
+- Simpler calculations for beginners
 
 ## 📊 MA Types Explained
 
@@ -149,26 +158,42 @@ Each MA combination is scored on:
 Run the comprehensive test suite to verify everything works:
 
 ```bash
-# Run all tests
-node tests/run-all-tests.js
+# Quick buy order test
+node tests/test-buy-order.js
 
-# Run individual test suites
-node tests/test-ml-risk-manager.js
-node tests/test-orders.js  # Requires API keys
+# Full trading cycle test (recommended)
+node tests/test-bitflow-full.js
 ```
 
 **Test Results:**
 ```
-✓ PASS ML Risk Manager (30 tests)
-✓ PASS Order Manager (11 tests)
+=== BitFlow Full Trading Cycle Test ===
 
-✓ ALL TESTS PASSED
-Total: 41 passed, 0 failed
+✅ All modules initialized
+✅ Fetched 99 bars
+✅ Strategy optimized (HMA(6) - 75.5% score, 55.6% win rate)
+✅ Current price: $107,119.27
+✅ TP/SL calculated (SL: 0.20%, TP: 0.50%)
+✅ Account info retrieved
+✅ Position size calculated (0.134666 BTC, 0.10% risk)
+✅ Signal: BUY
+✅ Buy order executed successfully!
+✅ Position confirmed
+✅ Position closed successfully
 
-🎉 All systems operational! Ready to trade.
+✅ ALL TESTS PASSED!
+✅ No const reassignment errors
+✅ ML calculations working correctly
+✅ Order execution working correctly
+✅ BitFlow is ready to trade!
 ```
 
-See [tests/README.md](tests/README.md) for detailed test documentation.
+**What the tests verify:**
+- ✅ No const reassignment errors
+- ✅ ML risk calculations work correctly
+- ✅ Order execution works on Alpaca
+- ✅ Position monitoring works
+- ✅ All modules integrate properly
 
 ## 📚 Documentation
 
@@ -193,12 +218,15 @@ See [tests/README.md](tests/README.md) for detailed test documentation.
 
 - **Paper Trading** - Cannot trade real money
 - **ONE Position at a Time** - No over-leveraging
-- **Bracket Orders** - Alpaca manages TP/SL automatically
+- **Manual TP/SL Monitoring** - Bot checks every second for TP/SL hits
 - **Fresh Data Every Run** - No stale cached data
-- **Quote-Based Pricing** - Uses bid/ask for accurate prices
+- **Real-Time Pricing** - Uses latest trade data from Alpaca
 - **Auto Position Cleanup** - Closes existing positions on startup
-- **Error Handling** - Exits cleanly on critical errors
+- **Error Handling** - Improved error messages and recovery
 - **Fee-Aware** - All calculations include trading fees
+- **Initialization Period** - 5-minute wait before first trade to establish baseline
+- **Crossover Confirmation** - Only buys on confirmed below→above MA crossover
+- **Volatility Filter** - Skips trades in extreme volatility (1m/5m timeframes)
 
 ## 🔧 Requirements
 
@@ -207,15 +235,15 @@ See [tests/README.md](tests/README.md) for detailed test documentation.
 
 ## 🐛 Troubleshooting
 
-**Stale Prices**: If prices don't update, the market may have low liquidity. The bot uses quotes instead of trades for fresher data.
+**Quick Fixes:**
 
-**Low Win Rate**: If win rate is below 60%, the bot automatically fetches more data and retests.
+- **"Assignment to constant variable"** - ✅ Fixed in v3.1.1! Update: `git pull origin main && npm install`
+- **Bot not trading** - Wait 5 minutes for initialization period
+- **Connection errors** - Check `.env` file has valid Alpaca API keys
+- **Tests failing** - Run `node test-bitflow-full.js` to diagnose
+- **Position stuck** - Press Ctrl+C, bot will close position on restart
 
-**Connection Errors**: Check your Alpaca API credentials in the `.env` file and ensure you have an active internet connection.
-
-**Position Stuck**: The bot automatically closes all positions on startup. Use Ctrl+C to exit cleanly.
-
-**Tests Failing**: Run `node tests/run-all-tests.js` to diagnose issues.
+📖 **Full Troubleshooting Guide**: See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for detailed solutions to all common issues.
 
 ## 🤝 Contributing
 

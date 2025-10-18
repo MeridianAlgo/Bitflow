@@ -5,8 +5,8 @@
  */
 
 require('dotenv').config();
-const MLRiskManager = require('./src/ml-risk-manager.js');
-const OrderManager = require('./src/orders.js');
+const MLRiskManager = require('../src/ml-risk-manager.js');
+const OrderManager = require('../src/orders.js');
 
 async function testBuyOrder() {
     console.log('=== Testing Buy Order Execution ===\n');

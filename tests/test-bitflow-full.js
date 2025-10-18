@@ -7,10 +7,10 @@
 
 require('dotenv').config();
 const chalk = require('chalk');
-const MLRiskManager = require('./src/ml-risk-manager.js');
-const DataManager = require('./src/data');
-const StrategyOptimizer = require('./src/strategy');
-const OrderManager = require('./src/orders');
+const MLRiskManager = require('../src/ml-risk-manager.js');
+const DataManager = require('../src/data.js');
+const StrategyOptimizer = require('../src/strategy.js');
+const OrderManager = require('../src/orders.js');
 
 async function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -23,13 +23,13 @@ async function testFullTradingCycle() {
         // Configuration
         const symbol = 'BTC/USD';
         const timeframe = '5m';
-        
+
         console.log(chalk.yellow('Step 1: Initializing modules...'));
         const mlRiskManager = new MLRiskManager();
         const dataManager = new DataManager(timeframe, symbol);
         const strategyOptimizer = new StrategyOptimizer(timeframe, symbol);
         const orderManager = new OrderManager();
-        
+
         console.log(chalk.green('✅ All modules initialized\n'));
 
         console.log(chalk.yellow('Step 2: Fetching historical data...'));
@@ -105,7 +105,7 @@ async function testFullTradingCycle() {
 
         console.log(chalk.yellow('Step 9: Testing buy order execution...'));
         console.log(chalk.cyan('   Executing buy order on Alpaca paper trading...'));
-        
+
         const buyResult = await orderManager.executeBuyOrder(
             symbol,
             positionResult.size,
@@ -124,10 +124,10 @@ async function testFullTradingCycle() {
             // Wait a moment then check position
             console.log(chalk.yellow('Step 10: Verifying position...'));
             await sleep(2000);
-            
+
             const positions = await orderManager.getPositions();
             const position = positions.find(p => p.symbol === symbol.replace('/', ''));
-            
+
             if (position) {
                 console.log(chalk.green('✅ Position confirmed'));
                 console.log(`   Quantity: ${position.qty}`);
@@ -137,7 +137,7 @@ async function testFullTradingCycle() {
                 // Clean up - close the position
                 console.log(chalk.yellow('Step 11: Closing test position...'));
                 const sellResult = await orderManager.executeSellOrder(symbol, parseFloat(position.qty));
-                
+
                 if (sellResult.success) {
                     console.log(chalk.green('✅ Position closed successfully\n'));
                 } else {
@@ -160,12 +160,12 @@ async function testFullTradingCycle() {
         console.error(chalk.red('\n❌ TEST FAILED'));
         console.error(chalk.red(`Error: ${error.message}`));
         console.error(chalk.red(`Type: ${error.constructor.name}`));
-        
+
         if (error.stack) {
             console.error(chalk.gray('\nStack trace:'));
             console.error(chalk.gray(error.stack));
         }
-        
+
         process.exit(1);
     }
 }
